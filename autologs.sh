@@ -20,6 +20,14 @@ COMMIT_URL=`git remote -v | grep -E "origin.*push" | sed "s/$COMMIT_STRIP//g"`/"
 REPO_STRIP="origin\t\| (push)\|\.git\|https:\/\/github.com\/"
 REPO=`git remote -v | grep -E "origin.*push" | sed "s/$REPO_STRIP//g"`
 
+# Parse Tags
+TAGS=`git tag | tr '\n' ' '`
+ARR_TAGS=($FIRST_COMMIT $TAGS "HEAD")
+NUM_TAGS=${#ARR_TAGS[@]}
+
+# An obscure way to reverse a list
+ARR_TAGS=(`for ((i=${NUM_TAGS}-1; i>=0; i--));  do echo ${ARR_TAGS[$i]}; done | tr '\n' ' '  `)
+
 #------------------------------------------------------------------------------
 # Functions
 
@@ -108,12 +116,7 @@ Release()
 
   #------------------------------------
   # Release Header
-  if [[ $NEW_VER == "HEAD" ]]; then
-    rel="Development"
-  else
-    rel="$NEW_VER"
-  fi
-  echo "## ${rel}"
+  echo "## ${NEW_VER_NAME}"
   echo
   #------------------------------------
   # Notes Header
@@ -161,7 +164,7 @@ Release()
     echo
   fi
 
-  #------------------------------------------------------------------------------
+  #------------------------------------
   # Commits Header
   echo "### Commits"
   echo
@@ -172,8 +175,32 @@ Release()
 
 Changelog()
 {
-  # Execute the changelog script
-  ${AUTOLOGS_DIR}/"scripts/changelog.sh"
+  # Move old changelog
+  mkdir -p ${NOTES_DIR}
+  new_ver_log=${NOTES_DIR}/"CHANGELOG_${NEW_VER_NAME}.md"
+
+  if [[ -f CHANGELOG.md ]]; then
+      echo "CHANGELOG.md will be moved to ${new_ver_log}"
+      mv CHANGELOG.md ${new_ver_log}
+  fi
+
+  #------------------------------------
+  # Changelog Header
+  echo -e "# CHANGELOG\n" > CHANGELOG.md  
+
+  #------------------------------------
+  # Write updates
+  prev_tag=${ARR_TAGS[0]}
+  for ((i=1; i<${NUM_TAGS}; i++));
+  do
+    # Parse the current tag
+    cur_tag=${ARR_TAGS[$i]}
+    echo "Comparing $prev_tag to $cur_tag"
+    # Create release notes for the current tag
+    Release ${cur_tag} ${prev_tag} $MAX_COMMITS $NOTES_DIR >> CHANGELOG.md
+    prev_tag=$cur_tag
+    i+=1
+  done  
 }
 
 
@@ -267,5 +294,12 @@ done
 
 # set positional arguments in their proper place
 eval set -- "$PARAMS"
+
+# Name of the new version
+if [[ $NEW_VER == "HEAD" ]]; then
+  NEW_VER_NAME="Development"
+else
+  NEW_VER_NAME="$NEW_VER"
+fi
 
 $RUN_FLAG $OLD_VER $NEW_VER $MAX_COMMITS $NOTES_DIR
