@@ -11,8 +11,14 @@ OLD_VER=`echo ${FIRST_COMMIT:0:7}`
 NEW_VER="HEAD"
 MAX_COMMITS=20
 NOTES_DIR="docs/notes"
-RUN_FLAG="Commits"
+RUN_FLAG="ListParams"
 OUT_FILE="/dev/stdout"
+
+
+COMMIT_STRIP="origin\t\| (push)\|\.git"
+COMMIT_URL=`git remote -v | grep -E "origin.*push" | sed "s/$COMMIT_STRIP//g"`/"commit"
+REPO_STRIP="origin\t\| (push)\|\.git\|https:\/\/github.com\/"
+REPO=`git remote -v | grep -E "origin.*push" | sed "s/$REPO_STRIP//g"`
 
 #------------------------------------------------------------------------------
 # Functions
@@ -61,15 +67,23 @@ Version()
   echo "$VERSION"
 }
 
+ListParams()
+{
+  echo
+  echo "Creating Auto $RUN_FLAG with the following parameters."
+  echo -e "\tRepository:      $REPO"
+  echo -e "\tCommit URL:      $COMMIT_URL"
+  echo -e "\tOld version:     $OLD_VER"
+  echo -e "\tNew version:     $NEW_VER"
+  echo -e "\tMax Commits:     $MAX_COMMITS"
+  echo -e "\tNotes Directory: $NOTES_DIR"
+  echo -e "\tOutput File:     $OUT_FILE"
+  echo -e "\tRun:             $RUN_FLAG"
+  echo
+}
+
 Commits()
 {
-  # Fetch the remote origin url
-  strip="origin\t\| (push)\|\.git"
-  origin=`git remote -v | grep -E "origin.*push" | sed "s/$strip//g"`
-
-  # Get the base url for commits
-  base="$origin/commit"
-
   # Counter for commits to print
   i=0;
 
@@ -82,7 +96,7 @@ Commits()
       fi
       hash=`echo $line | cut -d " " -f 1`
       msg=`echo $line | sed "s/$hash //g"`
-      echo -e "* [\`\`\`$hash\`\`\`]($base/$hash) $msg";
+      echo -e "* [\`\`\`$hash\`\`\`](${COMMIT_URL}/$hash) $msg";
 
       # Increment commit counter
       i=`expr $i + 1`
@@ -91,8 +105,69 @@ Commits()
 
 Release()
 {
-  # Execute the release notes script
-  ${AUTOLOGS_DIR}/"scripts/release.sh"
+
+  #------------------------------------
+  # Release Header
+  if [[ $NEW_VER == "HEAD" ]]; then
+    rel="Development"
+  else
+    rel="$NEW_VER"
+  fi
+  echo "## ${rel}"
+  echo
+  #------------------------------------
+  # Notes Header
+
+  target_notes=${NOTES_DIR}/Release_${rel}.md
+  if [[ -f $target_notes ]]; then
+    echo "### Notes"
+    echo
+    grep -r '[0-9]\. ' $target_notes
+    echo
+  fi
+
+  #------------------------------------
+  # Pull Requests Header
+
+  # Retieve PR hashes
+  arr_pr_commits=( `git ls-remote origin 'pull/*/head' | awk '{print substr($1,1,7)}' | tr '\n' ' ' ` )
+  pr_id=( `git ls-remote origin 'pull/*/head' | cut -f 2 | cut -d "/" -f 3 | tr '\n' ' ' ` )
+  num_pr=${#arr_pr_commits[@]}
+
+  # Retrieve commit hashes
+  arr_new_ver_commits=($(Commits ${OLD_VER} ${NEW_VER} | cut -d '`' -f 4 | tr '\n' ' '))
+
+  # Search for matching PRs
+  arr_ver_pr=()
+  for commit in ${arr_new_ver_commits[@]}; do
+    for ((i=0; i<num_pr; i++)); do
+      pr=${arr_pr_commits[$i]}
+      if [[ $pr == $commit ]]; then
+        ver_pr=${pr_id[$i]};
+        arr_ver_pr=(${arr_ver_pr[@]} $ver_pr)
+      fi;
+    done
+  done
+
+  # If a pull request was found
+  if [[ $ver_pr ]]; then
+      echo "### Pull Requests"
+      echo
+
+    for pr in ${arr_ver_pr[@]}; do
+      pr_title=`curl -s https://api.github.com/repos/${REPO}/pulls/2 | grep title | cut -d '"' -f 4 `
+      echo "* [\`\`\`pull/${pr}\`\`\`](https://github.com/${REPO}/pull/${pr}) ${pr_title}"
+    done
+    echo
+  fi
+
+  #------------------------------------------------------------------------------
+  # Commits Header
+  echo "### Commits"
+  echo
+  Commits ${OLD_VER} ${NEW_VER} ${MAX_COMMITS}
+  echo
+
 }
 
 Changelog()
@@ -192,15 +267,5 @@ done
 
 # set positional arguments in their proper place
 eval set -- "$PARAMS"
-
-echo
-echo "Creating Auto $RUN_FLAG with the following parameters."
-echo -e "\tOld version:     $OLD_VER"
-echo -e "\tNew version:     $NEW_VER"
-echo -e "\tMax Commits:     $MAX_COMMITS"
-echo -e "\tNotes Directory: $NOTES_DIR"
-echo -e "\tOutput File:     $OUT_FILE"
-echo -e "\tRun:             $RUN_FLAG"
-echo
 
 $RUN_FLAG $OLD_VER $NEW_VER $MAX_COMMITS $NOTES_DIR
