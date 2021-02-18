@@ -7,12 +7,15 @@ Automatically create commit history, release notes, and a changelog.
 
 ## Install
 
-## Local
+### Executable
 
 ```bash
-git clone https://github.com/ktmeaton/autologs
-export PATH=`pwd`/autologs:$PATH
-which autologs
+# Download executable
+curl https://raw.githubusercontent.com/ktmeaton/autologs/main/autologs -o autologs
+
+# Add to path
+sudo mv autologs /usr/local/bin/
+
 autologs --help
 ```
 
@@ -30,11 +33,10 @@ List parameters autologs will use:
 ```bash
 $ autologs
 
-Creating Auto ListParams with the following parameters.
         Repository:      ktmeaton/autologs
         Commit URL:      https://github.com/ktmeaton/autologs/commit
-        Old version:     a4c28c5
-        New version:     HEAD
+        Old tag:         a4c28c5
+        New tag:         HEAD
         Max Commits:     20
         Notes Directory: docs/notes
         Output File:     /dev/stdout
@@ -44,13 +46,11 @@ Creating Auto ListParams with the following parameters.
 ### Commit History
 
 ```bash
-$ autologs --commits --max-commits 5
+$ autologs --commits --max-commits 3
 
 * [```1f05f16```](https://github.com/ktmeaton/autologs/commit/1f05f16) proper writing to output file
 * [```f8c3eed```](https://github.com/ktmeaton/autologs/commit/f8c3eed) bugfix in repo PR url
 * [```0915673```](https://github.com/ktmeaton/autologs/commit/0915673) Merge pull request #1 from ktmeaton/dev
-* [```369d26b```](https://github.com/ktmeaton/autologs/commit/369d26b) installation docs
-* [```656890c```](https://github.com/ktmeaton/autologs/commit/656890c) rename notes dev title
 ```
 
 ### Release Notes
@@ -80,14 +80,12 @@ $ autologs --release --max-commits 5
 * [```365e6aa```](https://github.com/ktmeaton/autologs/commit/365e6aa) test markdown code rendering
 * [```a945418```](https://github.com/ktmeaton/autologs/commit/a945418) Merge pull request #2 from ktmeaton/dev
 * [```de3dd7f```](https://github.com/ktmeaton/autologs/commit/de3dd7f) start documenting commit usage
-* [```1f05f16```](https://github.com/ktmeaton/autologs/commit/1f05f16) proper writing to output file
-* [```f8c3eed```](https://github.com/ktmeaton/autologs/commit/f8c3eed) bugfix in repo PR url
 ```
 
 ### Changelog
 
 ```bash
-$ autologs --changelog --max-commits 5
+$ autologs --changelog --max-commits 3
 
 # CHANGELOG
 
@@ -113,16 +111,7 @@ $ autologs --changelog --max-commits 5
 * [```efe7f5b```](https://github.com/ktmeaton/autologs/commit/efe7f5b) make autologs executable
 * [```e47ae92```](https://github.com/ktmeaton/autologs/commit/e47ae92) fix uses typo
 * [```3197dc0```](https://github.com/ktmeaton/autologs/commit/3197dc0) test 'test' workflow
-* [```f2333e5```](https://github.com/ktmeaton/autologs/commit/f2333e5) test lint workflow
-* [```8983082```](https://github.com/ktmeaton/autologs/commit/8983082) first lint with pre-commit
 ```
-
-## To Do
-
-- [x] Rename 'ver' to 'tag'
-- Make PR not dependent on max commits.
-- [x] Github Actions: Test
-- [x] Github Actions: Lint
 
 ## Credits
 
