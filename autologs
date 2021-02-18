@@ -184,14 +184,10 @@ Changelog()
   mkdir -p ${NOTES_DIR}
   new_ver_log=${NOTES_DIR}/"CHANGELOG_${NEW_VER_NAME}.md"
 
-  if [[ -f CHANGELOG.md ]]; then
-      # echo "CHANGELOG.md will be moved to ${new_ver_log}"
-      mv CHANGELOG.md ${new_ver_log}
-  fi
-
   #------------------------------------
   # Changelog Header
-  echo -e "# CHANGELOG\n"
+  echo -e "# CHANGELOG"
+  echo
 
   #------------------------------------
   # Write updates
@@ -317,9 +313,9 @@ else
   NEW_VER_NAME="$NEW_VER"
 fi
 
-# Remove old output file if it exists
-if [[ $OUT_FILE != "/dev/stdout" ]]; then
-  rm -f $OUT_FILE;
+# Rename and backup old output file if it exists
+if [[ $OUT_FILE != "/dev/stdout" && -f $OUT_FILE ]]; then
+  mv $OUT_FILE ${OUT_FILE}.bak
 fi
 
-$RUN_FLAG $OLD_VER $NEW_VER $MAX_COMMITS $NOTES_DIR 1> $OUT_FILE
+$RUN_FLAG $OLD_VER $NEW_VER $MAX_COMMITS $NOTES_DIR > $OUT_FILE
