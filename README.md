@@ -8,8 +8,6 @@ Automatically create release notes and a changelog.
 
 ## Install
 
-### Executable
-
 ```bash
 # Download executable
 curl https://raw.githubusercontent.com/ktmeaton/autologs/v0.1.0/autologs -o autologs
