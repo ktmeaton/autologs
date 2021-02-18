@@ -1,6 +1,9 @@
 # autologs
 
-Automatically document commit history, release notes, and a changelog.
+[![Test](https://github.com/ktmeaton/autologs/actions/workflows/test.yaml/badge.svg)](https://github.com/ktmeaton/autologs/actions/workflows/test.yaml)
+[![Lint](https://github.com/ktmeaton/autologs/actions/workflows/lint.yaml/badge.svg)](https://github.com/ktmeaton/autologs/actions/workflows/lint.yaml)
+
+Automatically create commit history, release notes, and a changelog.
 
 ## Install
 
@@ -40,8 +43,6 @@ Creating Auto ListParams with the following parameters.
 
 ### Commit History
 
-Print the last 5 commits.
-
 ```bash
 $ autologs --commits --max-commits 5
 
@@ -55,10 +56,8 @@ $ autologs --commits --max-commits 5
 ### Release Notes
 
 ``` bash
-autologs --release --max-commits 5
-```
+$ autologs --release --max-commits 5
 
-```markdown
 ## Development
 
 ### Notes
@@ -85,12 +84,45 @@ autologs --release --max-commits 5
 * [```f8c3eed```](https://github.com/ktmeaton/autologs/commit/f8c3eed) bugfix in repo PR url
 ```
 
+### Changelog
+
+```bash
+$ autologs --changelog --max-commits 5
+
+# CHANGELOG
+
+## Development
+
+### Notes
+
+1. Create repository.
+1. Add scripts.
+1. Add release workflow.
+1. Remove hard-coded variables.
+1. Simplify script naming.
+1. Create the autologs main executable.
+1. Make autologs a standalone executable.
+
+### Pull Requests
+
+* [```pull/2```](https://github.com/ktmeaton/autologs/pull/2) Prelim Commit Documentation
+* [```pull/1```](https://github.com/ktmeaton/autologs/pull/1) Installation Docs
+
+### Commits
+
+* [```efe7f5b```](https://github.com/ktmeaton/autologs/commit/efe7f5b) make autologs executable
+* [```e47ae92```](https://github.com/ktmeaton/autologs/commit/e47ae92) fix uses typo
+* [```3197dc0```](https://github.com/ktmeaton/autologs/commit/3197dc0) test 'test' workflow
+* [```f2333e5```](https://github.com/ktmeaton/autologs/commit/f2333e5) test lint workflow
+* [```8983082```](https://github.com/ktmeaton/autologs/commit/8983082) first lint with pre-commit
+```
+
 ## To Do
 
 - Remove mentions to "ver/version" change to "tag".
 - Make PR not dependent on max commits.
 - [ ] Github Actions: Test
-- [ ] Github Actions: Lint
+- [x] Github Actions: Lint
 
 ## Credits
 
