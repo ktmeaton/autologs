@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#---------------------------------------------------
+#------------------------------------------------------------------------------
 # Input Arguments
 
 # Old version to compare to (default is first commit)
@@ -21,7 +21,7 @@ NOTES_DIR=$4
 # if NOTES_DIR not specified, will default to docs/releases
 NOTES_DIR=${NOTES_DIR:="docs/releases"}
 
-#---------------------------------------------------
+#------------------------------------------------------------------------------
 # Processing
 
 # Retrieve the scripts directory (absolute)
@@ -36,7 +36,7 @@ fi
 strip="origin\t\| (push)\|\.git\|https:\/\/github.com\/"
 repo=`git remote -v | grep -E "origin.*push" | sed "s/$strip//g"`
 
-#---------------------------------------------------
+#------------------------------------------------------------------------------
 # Version Parsing
 if [[ $NEW_VER == "HEAD" ]]; then
   target_ver=$OLD_VER
@@ -55,12 +55,12 @@ else
   rel="Release v$major.$minor.$patch"
 fi
 
-#---------------------------------------------------
+#------------------------------------------------------------------------------
 # Release Header
 echo "## ${rel}"
 echo
 
-#---------------------------------------------------
+#------------------------------------------------------------------------------
 # Notes Header
 
 # If on the head, look at 'next' release notes
@@ -77,7 +77,7 @@ if [[ -f $target_notes ]]; then
   echo
 fi
 
-#---------------------------------------------------
+#------------------------------------------------------------------------------
 # Pull Requests Header
 
 # Retieve PR hashes
@@ -112,7 +112,7 @@ if [[ $ver_pr ]]; then
   echo
 fi
 
-#---------------------------------------------------
+#------------------------------------------------------------------------------
 # Commits Header
 echo "### Commits"
 echo

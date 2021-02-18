@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#---------------------------------------------------
+#------------------------------------------------------------------------------
 # Input Arguments
 
 # Old version to compare to (default is first commit)
@@ -29,7 +29,7 @@ NOTES_DIR="docs/releases"
 # -1 will impose no restrictions on the number of commits
 MAX_COMMITS=-1
 
-#------------------------------
+#------------------------------------------------------------------------------
 # Parse Versions
 arr_ver=($BASE $TAGS $HEAD)
 num_ver=${#arr_ver[@]}
@@ -39,7 +39,7 @@ arr_ver=(`for ((i=${num_ver}-1; i>=0; i--));  do echo ${arr_ver[$i]}; done | tr 
 prev_ver=${arr_ver[0]}
 latest_ver=${arr_ver[1]}
 
-#------------------------------
+#------------------------------------------------------------------------------
 # Get New Ver
 # By default next ver will be a new patch if not specified
 if [[ -z $NEW_VER ]]; then
@@ -50,7 +50,7 @@ if [[ -z $NEW_VER ]]; then
   NEW_VER="v"$major.$minor.`expr $patch + 1`
 fi
 
-#------------------------------
+#------------------------------------------------------------------------------
 # Remove old changelog
 new_ver_log=${NOTES_DIR}/"CHANGELOG_"`echo $NEW_VER | sed 's/v//g' | sed 's/\./-/g'`".md"
 
@@ -59,11 +59,11 @@ if [[ -f CHANGELOG.md ]]; then
     mv CHANGELOG.md ${new_ver_log}
 fi
 
-#------------------------------
+#------------------------------------------------------------------------------
 # Changelog Header
 echo -e "# Changelog\n" > CHANGELOG.md
 
-#------------------------------
+#------------------------------------------------------------------------------
 # Write updates
 for ((i=1; i<${num_ver}; i++));
 do
