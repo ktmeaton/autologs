@@ -97,7 +97,7 @@ matching file: docs/notes/Notes_v0.1.0.md
 autologs --changelog -o CHANGELOG.md
 ```
 
-See [CHANGELOG.md](https://github.com/ktmeaton/autologs/blob/v0.1.0/CHANGELOG.md) for full output.
+See [CHANGELOG.md](https://github.com/ktmeaton/autologs/blob/main/CHANGELOG.md) for full output.
 
 ## Help
 
