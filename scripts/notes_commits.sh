@@ -20,7 +20,9 @@ MAX_COMMITS="${MAX_COMMITS:=20}"
 # Processing
 
 # Fetch the remote origin url
-origin=`git remote -v | grep -E "origin.*push" | sed 's/origin\t//g' | sed 's/ (push)//g' | sed 's/\.git//g'`
+strip="origin\t\| (push)\|\.git"
+origin=`git remote -v | grep -E "origin.*push" | sed "s/$strip//g"`
+
 # Get the base url for commits
 base="$origin/commit"
 

@@ -1,39 +1,42 @@
 #!/bin/bash
 
-# First ="a58299c51609ad"
+#---------------------------------------------------
+# Input Arguments
+
+# Old version to compare to (default is first commit)
 OLD_VER=$1
+first_commit=`git log --reverse | head -n 1 | cut -d " " -f2`
+OLD_VER=${OLD_VER:=${first_commit}}
+
+# New version to compare to, default is HEAD
 NEW_VER=$2
-# if MAX_COMMITS not specified, will use default in notes_commits script
+NEW_VER=${NEW_VER:="HEAD"}
+
+# Number of commits to print (default is 20, use -1 for infinite)
 MAX_COMMITS=$3
+MAX_COMMITS="${MAX_COMMITS:=20}"
 
-SCRIPTS_DIR=workflow/scripts
-NOTES_DIR=docs/releases
-REPO="ktmeaton/plague-phylogeography"
+# if MAX_COMMITS not specified, will use default in notes_commits script
+NOTES_DIR=$4
+# if NOTES_DIR not specified, will default to docs/releases
+NOTES_DIR=${NOTES_DIR:="docs/releases"}
 
-# ----------------
-# PR info
+#---------------------------------------------------
+# Processing
 
-# Retieve PR hashes
-arr_pr_commits=( `git ls-remote origin 'pull/*/head' | awk '{print substr($1,1,7)}' | tr '\n' ' ' ` )
-pr_id=( `git ls-remote origin 'pull/*/head' | cut -f 2 | cut -d "/" -f 3 | tr '\n' ' ' ` )
-num_pr=${#arr_pr_commits[@]}
+# Retrieve the scripts directory (absolute)
+scripts_dir="`dirname \"$0\"`"
+scripts_dir="`( cd \"$scripts_dir\" && pwd )`"
+if [ -z "$scripts_dir" ] ; then
+  echo "Scripts directory $scripts_dir is inaccessible"
+  exit 1
+fi
 
-# Retrieve commit hashes
-arr_new_ver_commits=( $(${SCRIPTS_DIR}/notes_commits.sh ${OLD_VER} ${NEW_VER} | cut -d '`' -f 4 | tr '\n' ' ') )
+# Fetch the repo name
+strip="origin\t\| (push)\|\.git\|https:\/\/github.com\/"
+repo=`git remote -v | grep -E "origin.*push" | sed "s/$strip//g"`
 
-arr_ver_pr=()
-# Search for matching PRs
-for commit in ${arr_new_ver_commits[@]}; do
-  for ((i=0; i<num_pr; i++)); do
-    pr=${arr_pr_commits[$i]}
-    if [[ $pr == $commit ]]; then
-      ver_pr=${pr_id[$i]};
-      arr_ver_pr=(${arr_ver_pr[@]} $ver_pr)
-    fi;
-  done
-done
-
-# ----------------
+#---------------------------------------------------
 # Version Parsing
 if [[ $NEW_VER == "HEAD" ]]; then
   target_ver=$OLD_VER
@@ -52,27 +55,12 @@ else
   rel="Release v$major.$minor.$patch"
 fi
 
-# ----------------
+#---------------------------------------------------
 # Release Header
 echo "## ${rel}"
 echo
 
-# ----------------
-# PR Header
-
-# If a pull request was found
-if [[ $ver_pr ]]; then
-    echo "### Pull Requests"
-    echo
-
-  for pr in ${arr_ver_pr[@]}; do
-    pr_title=`curl -s https://api.github.com/repos/${REPO}/pulls/2 | grep title | cut -d '"' -f 4 `
-    echo "* [\`\`\`pull/${pr}\`\`\`](https://github.com/${REPO}/pull/${pr}) ${pr_title}"
-  done
-  echo
-fi
-
-# ----------------
+#---------------------------------------------------
 # Notes Header
 
 # If on the head, look at 'next' release notes
@@ -89,9 +77,44 @@ if [[ -f $target_notes ]]; then
   echo
 fi
 
-# ----------------
+#---------------------------------------------------
+# Pull Requests Header
+
+# Retieve PR hashes
+arr_pr_commits=( `git ls-remote origin 'pull/*/head' | awk '{print substr($1,1,7)}' | tr '\n' ' ' ` )
+pr_id=( `git ls-remote origin 'pull/*/head' | cut -f 2 | cut -d "/" -f 3 | tr '\n' ' ' ` )
+num_pr=${#arr_pr_commits[@]}
+
+# Retrieve commit hashes
+arr_new_ver_commits=( $(${scripts_dir}/notes_commits.sh ${OLD_VER} ${NEW_VER} | cut -d '`' -f 4 | tr '\n' ' ') )
+
+# Search for matching PRs
+arr_ver_pr=()
+for commit in ${arr_new_ver_commits[@]}; do
+  for ((i=0; i<num_pr; i++)); do
+    pr=${arr_pr_commits[$i]}
+    if [[ $pr == $commit ]]; then
+      ver_pr=${pr_id[$i]};
+      arr_ver_pr=(${arr_ver_pr[@]} $ver_pr)
+    fi;
+  done
+done
+
+# If a pull request was found
+if [[ $ver_pr ]]; then
+    echo "### Pull Requests"
+    echo
+
+  for pr in ${arr_ver_pr[@]}; do
+    pr_title=`curl -s https://api.github.com/repos/${REPO}/pulls/2 | grep title | cut -d '"' -f 4 `
+    echo "* [\`\`\`pull/${pr}\`\`\`](https://github.com/${REPO}/pull/${pr}) ${pr_title}"
+  done
+  echo
+fi
+
+#---------------------------------------------------
 # Commits Header
 echo "### Commits"
 echo
-${SCRIPTS_DIR}/notes_commits.sh ${OLD_VER} ${NEW_VER} ${MAX_COMMITS}
+${scripts_dir}/notes_commits.sh ${OLD_VER} ${NEW_VER} ${MAX_COMMITS}
 echo
