@@ -100,13 +100,13 @@ Commits()
   NOTES_DIR=$4
 
   # Counter for commits to print
-  i=0;
+  i_commit=0;
 
   git log --pretty=oneline --abbrev-commit ${OLD_TAG}..${NEW_TAG} | \
     while read line;
     do
       # Stop printing if max commits has been reached
-      if [[ $i -ge $MAX_COMMITS && $MAX_COMMITS != "all" ]]; then
+      if [[ $i_commit -ge $MAX_COMMITS && $MAX_COMMITS != "all" ]]; then
         break
       fi
       hash=`echo $line | cut -d " " -f 1`
@@ -114,7 +114,7 @@ Commits()
       echo -e "* [\`\`\`$hash\`\`\`](${COMMIT_URL}/$hash) $msg"
 
       # Increment commit counter
-      i=`expr $i + 1`
+      i_commit=`expr $i_commit + 1`
     done;
 }
 
@@ -125,6 +125,14 @@ Release()
   NEW_TAG=$2
   MAX_COMMITS=$3
   NOTES_DIR=$4
+
+  #------------------------------------------------------------------------------
+  # Name of the new tag
+  if [[ $NEW_TAG == "HEAD" ]]; then
+    NEW_TAG_NAME="Development"
+  else
+    NEW_TAG_NAME="$NEW_TAG"
+  fi
 
   #------------------------------------
   # Release Header
@@ -156,10 +164,10 @@ Release()
   # Search for matching PRs
   arr_tag_pr=()
   for commit in ${arr_new_tag_commits[@]}; do
-    for ((i=0; i<num_pr; i++)); do
-      pr=${arr_pr_commits[$i]}
+    for ((i_pr=0; i_pr<num_pr; i_pr++)); do
+      pr=${arr_pr_commits[$i_pr]}
       if [[ $pr == $commit ]]; then
-        tag_pr=${pr_id[$i]};
+        tag_pr=${pr_id[$i_pr]};
         arr_tag_pr=(${arr_tag_pr[@]} $tag_pr)
       fi;
     done
@@ -203,15 +211,14 @@ Changelog()
   #------------------------------------
   # Write updates
   prev_tag=${ARR_TAGS[0]}
-  for ((i=1; i<${NUM_TAGS}; i++));
+  for ((i_tag=1; i_tag<${NUM_TAGS}; i_tag++));
   do
     # Parse the current tag
-    cur_tag=${ARR_TAGS[$i]}
-    #echo "Comparing $prev_tag to $cur_tag"
+    cur_tag=${ARR_TAGS[$i_tag]}
+    #echo "Comparing $cur_tag to $prev_tag"
     # Create release notes for the current tag
     Release ${cur_tag} ${prev_tag} $MAX_COMMITS $NOTES_DIR
     prev_tag=$cur_tag
-    i+=1
   done
 }
 
@@ -315,14 +322,6 @@ while (( "$#" )); do
 done
 # set positional arguments in their proper place
 eval set -- "$PARAMS"
-
-#------------------------------------------------------------------------------
-# Name of the new tag
-if [[ $NEW_TAG == "HEAD" ]]; then
-  NEW_TAG_NAME="Development"
-else
-  NEW_TAG_NAME="$NEW_TAG"
-fi
 
 # If there are 0 tags, use first and HEAD
 if [[ `git tag | wc -l` == '0' ]]; then
