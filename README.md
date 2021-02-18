@@ -1,15 +1,17 @@
 # autologs
-Automatically create release notes and changelog.
 
+Automatically document commit history, release notes, and a changelog.
 
-Parameters
+## Install
 
-1. Old version (tag or commit hash)
-1. New version (tag or commit hash)
-1. Max commits to print
-1. Notes directory
+Add as a submodule to an existing git repository.
+
+```bash
+git submodule add https://github.com/ktmeaton/autologs
+./autologs/autologs --help
+```
 
 ## Credits
 
-Argument Parsing: <https://medium.com/@Drew_Stokes/bash-argument-parsing-54f3b81a6a8f>
-Help: <https://opensource.com/article/19/12/help-bash-program>
+Argument Parsing: <https://medium.com/@Drew_Stokes/bash-argument-parsing-54f3b81a6a8f>  
+Help Function: <https://opensource.com/article/19/12/help-bash-program>
