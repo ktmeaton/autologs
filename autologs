@@ -313,10 +313,10 @@ fi
 
 # If there are 0 tags, use first and HEAD
 if [[ `git tag | wc -l` == '0' ]]; then
-  OLD_VER=$FIRST_COMMIT
-  NEW_VER="HEAD"
+  OLD_TAG=$FIRST_COMMIT
+  NEW_TAG="HEAD"
 elif [[ `git tag | wc -l` == '1' ]]; then
-  OLD_VER=$FIRST_COMMIT
+  OLD_TAG=$FIRST_COMMIT
 fi
 
 # Rename and backup old output file if it exists
