@@ -60,12 +60,12 @@ Help()
   echo -e "\t-v, --version     Print software version and exit."
   echo -e "\t-o, --output      Output file.                                [ default:" $OUT_FILE "]"
   echo -e "\t--old-ver         An earlier tag/commit hash to compare to.   [ default:" $OLD_VER "]"
-  echo -e "\t--new-ver         A newer tag/commit hash to compare to.      [ default:" $NEW_VER "]"  
+  echo -e "\t--new-ver         A newer tag/commit hash to compare to.      [ default:" $NEW_VER "]"
   echo -e "\t--max-commits     The maximum number of commits to print.     [ default:" $MAX_COMMITS "]"
   echo -e "\t--notes-dir       A directory containing manual notees.       [ default:" $NOTES_DIR "]"
-  echo -e "\t--commits         Print commit history."  
+  echo -e "\t--commits         Print commit history."
   echo -e "\t--release         Print release notes."
-  echo -e "\t--changelog       Print changelog."  
+  echo -e "\t--changelog       Print changelog."
   echo
 }
 
@@ -109,7 +109,7 @@ Commits()
       msg=`echo $line | sed "s/$hash //g"`
       echo -e "* [\`\`\`$hash\`\`\`](${COMMIT_URL}/$hash) $msg"
 
-      # Increment commit counter  
+      # Increment commit counter
       i=`expr $i + 1`
     done;
 }
@@ -205,7 +205,7 @@ Changelog()
     Release ${cur_tag} ${prev_tag} $MAX_COMMITS $NOTES_DIR
     prev_tag=$cur_tag
     i+=1
-  done  
+  done
 }
 
 #------------------------------------------------------------------------------
@@ -218,13 +218,13 @@ while (( "$#" )); do
     -h|--help)
       Help
       exit 1
-      ;; 
+      ;;
 
     # Version
     -v|--version)
       Version
       exit 1
-      ;;  
+      ;;
 
     # Old version
     -o|--output)
@@ -234,7 +234,7 @@ while (( "$#" )); do
       else
         shift
       fi
-      ;;  
+      ;;
 
     # Old version
     --old-ver)
@@ -244,7 +244,7 @@ while (( "$#" )); do
       else
         shift
       fi
-      ;;  
+      ;;
 
     # New version
     --new-ver)
@@ -254,7 +254,7 @@ while (( "$#" )); do
       else
         shift
       fi
-      ;;  
+      ;;
 
     # Max commits
     --max-commits)
@@ -264,7 +264,7 @@ while (( "$#" )); do
       else
         shift
       fi
-      ;;  
+      ;;
 
     # Notes Directory
     --notes-dir)
@@ -274,27 +274,27 @@ while (( "$#" )); do
       else
         shift
       fi
-      ;;        
+      ;;
 
     # Commit History
     --commits)
       RUN_FLAG="Commits"
       shift
-      ;;   
+      ;;
 
     # Release Notes
     --release)
       RUN_FLAG="Release"
       shift
-      ;;        
+      ;;
 
     # Release Notes
     --changelog)
       RUN_FLAG="Changelog"
       shift
-      ;;          
+      ;;
 
-    # Unsupported Flags             
+    # Unsupported Flags
     -*|--*=)
       echo "Error: Unsupported flag $1" >&2
       exit 1

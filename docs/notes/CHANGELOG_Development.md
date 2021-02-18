@@ -37,4 +37,3 @@
 * [```07fdd3d```](https://github.com/ktmeaton/autologs/commit/07fdd3d) remove hard coded var in release notes
 * [```e000fd0```](https://github.com/ktmeaton/autologs/commit/e000fd0) remove hard coded variables
 * [```c5aed92```](https://github.com/ktmeaton/autologs/commit/c5aed92) create repository
-
