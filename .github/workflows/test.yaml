@@ -22,7 +22,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create commits history
-        run: ./autologs --commits -o commits-history.md
+        run: |
+          ./autologs --commits
+          ./autologs --commits -o commits-history.md
 
       - name: Upload commits history
         uses: actions/upload-artifact@v2
@@ -39,7 +41,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create release notes
-        run: ./autologs --release -o release-notes.md
+        run: |
+          ./autologs --release
+          ./autologs --release -o release-notes.md
 
       - name: Upload release notes
         uses: actions/upload-artifact@v2
@@ -56,7 +60,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create changelog
-        run: ./autologs --changelog -o CHANGELOG.md
+        run: |
+          ./autologs --changelog
+          ./autologs --changelog -o CHANGELOG.md
 
       - name: Upload changelog
         uses: actions/upload-artifact@v2
