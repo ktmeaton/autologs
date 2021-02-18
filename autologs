@@ -188,10 +188,12 @@ Release()
   #------------------------------------
   # Commits Header
   echo "### Commits"
+  commits=`Commits ${OLD_TAG} ${NEW_TAG} ${MAX_COMMITS}`
   echo
-  Commits ${OLD_TAG} ${NEW_TAG} ${MAX_COMMITS}
-  echo
-
+  if [[ $commits ]]; then
+    echo -e "$commits";
+    echo
+  fi
 }
 
 #------------------------------------------------------------------------------
@@ -217,7 +219,7 @@ Changelog()
     cur_tag=${ARR_TAGS[$i_tag]}
     #echo "Comparing $cur_tag to $prev_tag"
     # Create release notes for the current tag
-    Release ${cur_tag} ${prev_tag} $MAX_COMMITS $NOTES_DIR
+    Release ${cur_tag} ${prev_tag} "all" $NOTES_DIR
     prev_tag=$cur_tag
   done
 }
@@ -327,7 +329,10 @@ eval set -- "$PARAMS"
 if [[ `git tag | wc -l` == '0' ]]; then
   OLD_TAG=$FIRST_COMMIT
   NEW_TAG="HEAD"
-elif [[ `git tag | wc -l` == '1' ]]; then
+fi
+
+# If old and new are the same because there is only one tag
+if [[ $OLD_TAG == $NEW_TAG && `git tag | wc -l` == '1' ]]; then
   OLD_TAG=$FIRST_COMMIT
 fi
 
