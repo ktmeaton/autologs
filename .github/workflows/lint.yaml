@@ -1,0 +1,36 @@
+#------------------------------------------------------------------------------
+name: Lint
+#------------------------------------------------------------------------------
+# Workflow conditions
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+  release:
+    types: [published]
+#------------------------------------------------------------------------------
+jobs:
+  #----------------------------------------------------------------------------
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.7'
+
+      - name: Install pre-commit
+        run: |
+          pip install pre-commit==2.6.0
+          pre-commit install
+          pre-commit install-hooks
+
+      - name: Lint with pre-commit
+        run: pre-commit run --all-files
