@@ -48,21 +48,22 @@ $ autologs
 ### Commit History
 
 ```bash
-$ autologs --commits --max-commits 3
+autologs --commits --max-commits 3
+```
 
 * [```1f05f16```](https://github.com/ktmeaton/autologs/commit/1f05f16) proper writing to output file
 * [```f8c3eed```](https://github.com/ktmeaton/autologs/commit/f8c3eed) bugfix in repo PR url
 * [```0915673```](https://github.com/ktmeaton/autologs/commit/0915673) Merge pull request #1 from ktmeaton/dev
-```
 
 ### Release Notes
 
 ``` bash
-$ autologs --release --new-tag v0.1.0 --max-commits 3
+autologs --release --new-tag v0.1.0 --max-commits 3
+```
 
-## v0.1.0
+**v0.1.0**
 
-### Notes
+**Notes**
 
 1. Create repository.
 1. Add scripts.
@@ -72,20 +73,19 @@ $ autologs --release --new-tag v0.1.0 --max-commits 3
 1. Create the autologs main executable.
 1. Make autologs a standalone executable.
 
-### Pull Requests
+**Pull Requests**
 
 * [```pull/2```](https://github.com/ktmeaton/autologs/pull/2) Prelim Commit Documentation
 * [```pull/1```](https://github.com/ktmeaton/autologs/pull/1) Installation Docs
 
-### Commits
+**Commits**
 
 * [```abe0fe2```](https://github.com/ktmeaton/autologs/commit/abe0fe2) rename notes and fix pr title
 * [```c033197```](https://github.com/ktmeaton/autologs/commit/c033197) move new tag naming into release
 * [```ce2fded```](https://github.com/ktmeaton/autologs/commit/ce2fded) fix pr dependency on max commits
-```
 
-- The optional section "### Notes" will appear if a notes file matching the tag name exists.
-- The notes file must contain an enumerated list of notes.
+The optional section "### Notes" will appear if a notes file matching the tag name exists.
+The notes file must contain an enumerated list of notes.
 
 ```yaml
 autologs parameters:
@@ -104,7 +104,7 @@ matching file: docs/notes/Notes_v0.1.0.md
 autologs --changelog
 ```
 
-See [CHANGELOG.md](https://github.com/ktmeaton/autologs/blob/v0.1.0/CHANGELOG.md) for output.
+See [CHANGELOG.md](https://github.com/ktmeaton/autologs/blob/v0.1.0/CHANGELOG.md) for full output.
 
 ## Help
 
