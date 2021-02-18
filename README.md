@@ -1,10 +1,10 @@
 # autologs
 
-[![GitHub release](https://img.shields.io/github/release/ktmeaton/autologs)](https://github.com/ktmeaton/autologs/releases/)
+[![GitHub release](https://img.shields.io/github/release/ktmeaton/autologs/all.svg)](https://GitHub.com/ktmeaton/autologs/releases/)
 [![Test](https://github.com/ktmeaton/autologs/actions/workflows/test.yaml/badge.svg)](https://github.com/ktmeaton/autologs/actions/workflows/test.yaml)
 [![Lint](https://github.com/ktmeaton/autologs/actions/workflows/lint.yaml/badge.svg)](https://github.com/ktmeaton/autologs/actions/workflows/lint.yaml)
 
-Automatically create commit history, release notes, and a changelog.
+Automatically create release notes and a changelog.
 
 ## Install
 
@@ -12,11 +12,12 @@ Automatically create commit history, release notes, and a changelog.
 
 ```bash
 # Download executable
-curl https://raw.githubusercontent.com/ktmeaton/autologs/main/autologs -o autologs
+curl https://raw.githubusercontent.com/ktmeaton/autologs/v0.1.0/autologs -o autologs
 
 # Add to path
 sudo mv autologs /usr/local/bin/
 
+# Test installation
 autologs --help
 ```
 
@@ -57,9 +58,9 @@ $ autologs --commits --max-commits 3
 ### Release Notes
 
 ``` bash
-$ autologs --release --max-commits 5
+$ autologs --release --new-tag v0.1.0 --max-commits 3
 
-## Development
+## v0.1.0
 
 ### Notes
 
@@ -78,44 +79,43 @@ $ autologs --release --max-commits 5
 
 ### Commits
 
-* [```365e6aa```](https://github.com/ktmeaton/autologs/commit/365e6aa) test markdown code rendering
-* [```a945418```](https://github.com/ktmeaton/autologs/commit/a945418) Merge pull request #2 from ktmeaton/dev
-* [```de3dd7f```](https://github.com/ktmeaton/autologs/commit/de3dd7f) start documenting commit usage
+* [```abe0fe2```](https://github.com/ktmeaton/autologs/commit/abe0fe2) rename notes and fix pr title
+* [```c033197```](https://github.com/ktmeaton/autologs/commit/c033197) move new tag naming into release
+* [```ce2fded```](https://github.com/ktmeaton/autologs/commit/ce2fded) fix pr dependency on max commits
 ```
 
 ### Changelog
 
 ```bash
-$ autologs --changelog --max-commits 3
+autologs --changelog
+```
 
-# CHANGELOG
+See [CHANGELOG.md](https://github.com/ktmeaton/autologs/blob/v0.1.0/CHANGELOG.md) for output.
 
-## Development
+## Help
 
-### Notes
+```bash
+$ autologs --help
+Automatically create commit history, release notes, and a changelog.
 
-1. Create repository.
-1. Add scripts.
-1. Add release workflow.
-1. Remove hard-coded variables.
-1. Simplify script naming.
-1. Create the autologs main executable.
-1. Make autologs a standalone executable.
+Syntax: autologs [-h|-v|-o|--old-tag|--new-tag|--max-commits|--notes-dir|--commits|--release]
 
-### Pull Requests
-
-* [```pull/2```](https://github.com/ktmeaton/autologs/pull/2) Prelim Commit Documentation
-* [```pull/1```](https://github.com/ktmeaton/autologs/pull/1) Installation Docs
-
-### Commits
-
-* [```efe7f5b```](https://github.com/ktmeaton/autologs/commit/efe7f5b) make autologs executable
-* [```e47ae92```](https://github.com/ktmeaton/autologs/commit/e47ae92) fix uses typo
-* [```3197dc0```](https://github.com/ktmeaton/autologs/commit/3197dc0) test 'test' workflow
+Options:
+        -h, --help        Print this Help.
+        -v, --version     Print software version and exit.
+        -o, --output      Output file.                                [ default: /dev/stdout ]
+        --old-tag         An earlier tag/commit hash to compare to.   [ default: a4c28c5 ]
+        --new-tag         A newer tag/commit hash to compare to.      [ default: HEAD ]
+        --max-commits     The maximum number of commits to print.     [ default: 20 ]
+        --notes-dir       A directory containing manual notees.       [ default: docs/notes ]
+        --commits         Print commit history.
+        --release         Print release notes.
+        --changelog       Print changelog.
 ```
 
 ## Credits
 
+Author: [Katherine Eaton](https://ktmeaton.github.io/)  
 Commit History Style: <https://github.com/yuzu-emu/yuzu-mainline/releases>  
 Argument Parsing: <https://medium.com/@Drew_Stokes/bash-argument-parsing-54f3b81a6a8f>  
 Help Function: <https://opensource.com/article/19/12/help-bash-program>

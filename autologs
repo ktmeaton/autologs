@@ -50,7 +50,7 @@ Help()
   # Display Help
   # Credits: https://opensource.com/article/19/12/help-bash-program
   # Display Help
-  echo "Automatically create commit history, release notes, and a changelog."
+  echo "Automatically create release notes and a changelog."
   echo
   echo "Syntax: autologs [-h|-v|-o|--old-tag|--new-tag|--max-commits|--notes-dir|--commits|--release]"
   echo
