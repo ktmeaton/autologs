@@ -89,8 +89,8 @@ autologs --release --max-commits 5
 
 - Remove mentions to "ver/version" change to "tag".
 - Make PR not dependent on max commits.
-- Test workflow
-- setup pre-commit (pip install pre-commit)
+- [ ] Github Actions: Test
+- [ ] Github Actions: Lint
 
 ## Credits
 
