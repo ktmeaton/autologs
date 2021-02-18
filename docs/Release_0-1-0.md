@@ -5,3 +5,4 @@
 1. Add release workflow.
 1. Remove hard-coded variables.
 1. Simplify script naming.
+1. Create the autologs main executable.

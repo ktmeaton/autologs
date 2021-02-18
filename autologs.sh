@@ -1,5 +1,7 @@
 #!/bin/bash
 
+VERSION=0.1.0
+
 #------------------------------------------------------------------------------
 # Help  
 
@@ -12,9 +14,15 @@ Help()
    echo "Syntax: autologs [-h|v]"
    echo
    echo "Options:"
-   echo -e "\t-h     Print this Help."
-   echo -e "\t-v     Print software version and exit."
+   echo -e "\t-h, --help        Print this Help."
+   echo -e "\t-v, --version     Print software version and exit."
    echo
+}
+
+Version()
+{
+  # Display Version
+  echo "$VERSION"
 }
 
 
@@ -22,15 +30,14 @@ Help()
 PARAMS=""
 while (( "$#" )); do
   case "$1" in
-    -a|--my-boolean-flag)
-      MY_FLAG=0
-      shift
-      ;;
     -h|--help)
-      HELP_FLAG=1
       Help
       exit 1
-      ;;      
+      ;; 
+    -v|--version)
+      Version
+      exit 1
+      ;;            
     -b|--my-flag-with-argument)
       if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
         MY_FLAG_ARG=$2
