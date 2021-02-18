@@ -86,7 +86,7 @@ pr_id=( `git ls-remote origin 'pull/*/head' | cut -f 2 | cut -d "/" -f 3 | tr '\
 num_pr=${#arr_pr_commits[@]}
 
 # Retrieve commit hashes
-arr_new_ver_commits=( $(${scripts_dir}/notes_commits.sh ${OLD_VER} ${NEW_VER} | cut -d '`' -f 4 | tr '\n' ' ') )
+arr_new_ver_commits=( $(${scripts_dir}/commits.sh ${OLD_VER} ${NEW_VER} | cut -d '`' -f 4 | tr '\n' ' ') )
 
 # Search for matching PRs
 arr_ver_pr=()
@@ -116,5 +116,5 @@ fi
 # Commits Header
 echo "### Commits"
 echo
-${scripts_dir}/notes_commits.sh ${OLD_VER} ${NEW_VER} ${MAX_COMMITS}
+${scripts_dir}/commits.sh ${OLD_VER} ${NEW_VER} ${MAX_COMMITS}
 echo

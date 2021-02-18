@@ -3,3 +3,4 @@
 1. Create repository.
 1. Add scripts.
 1. Add release workflow.
+1. Remove hard-coded variables.

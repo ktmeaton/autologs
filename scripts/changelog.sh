@@ -1,11 +1,28 @@
 #!/bin/bash
 
-NEW_VER=$1
+#---------------------------------------------------
+# Input Arguments
 
-#------------------------------
-# Constants
-BASE=`git log -r | head -n 1 | cut -d " " -f2`
-TAGS=`git tag | tr '\n' ' '`
+# Old version to compare to (default is first commit)
+OLD_VER=$1
+first_commit=`git log --reverse | head -n 1 | cut -d " " -f2`
+OLD_VER=${OLD_VER:=${first_commit}}
+
+# New version to compare to, default is HEAD
+NEW_VER=$2
+NEW_VER=${NEW_VER:="HEAD"}
+
+# Number of commits to print (default is 20, use -1 for infinite)
+MAX_COMMITS=$3
+MAX_COMMITS="${MAX_COMMITS:=20}"
+
+# if MAX_COMMITS not specified, will use default in notes_commits script
+NOTES_DIR=$4
+# if NOTES_DIR not specified, will default to docs/releases
+NOTES_DIR=${NOTES_DIR:="docs/releases"}
+
+
+tags=`git tag | tr '\n' ' '`
 HEAD="HEAD"
 SCRIPTS_DIR="scripts"
 NOTES_DIR="docs/releases"
@@ -52,6 +69,6 @@ for ((i=1; i<${num_ver}; i++));
 do
   cur_ver=${arr_ver[$i]}
   echo "Comparing $cur_ver to $prev_ver"
-  ${SCRIPTS_DIR}/notes_release.sh ${cur_ver} ${prev_ver} $MAX_COMMITS >> CHANGELOG.md
+  ${SCRIPTS_DIR}/release.sh ${cur_ver} ${prev_ver} $MAX_COMMITS >> CHANGELOG.md
   prev_ver=$cur_ver
 done
