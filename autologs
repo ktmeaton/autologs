@@ -7,8 +7,8 @@ VERSION=0.1.0
 
 # Defaults
 FIRST_COMMIT=`git log --reverse | head -n 1 | cut -d " " -f2`
-OLD_VER=`echo ${FIRST_COMMIT:0:7}`
-NEW_VER="HEAD"
+OLD_TAG=`echo ${FIRST_COMMIT:0:7}`
+NEW_TAG="HEAD"
 MAX_COMMITS=20
 NOTES_DIR="docs/notes"
 RUN_FLAG="ListParams"
@@ -53,14 +53,14 @@ Help()
   # Display Help
   echo "Automatically create commit history, release notes, and a changelog."
   echo
-  echo "Syntax: autologs [-h|-v|-o|--old-ver|--new-ver|--max-commits|--notes-dir|--commits|--release]"
+  echo "Syntax: autologs [-h|-v|-o|--old-tag|--new-tag|--max-commits|--notes-dir|--commits|--release]"
   echo
   echo "Options:"
   echo -e "\t-h, --help        Print this Help."
   echo -e "\t-v, --version     Print software version and exit."
   echo -e "\t-o, --output      Output file.                                [ default:" $OUT_FILE "]"
-  echo -e "\t--old-ver         An earlier tag/commit hash to compare to.   [ default:" $OLD_VER "]"
-  echo -e "\t--new-ver         A newer tag/commit hash to compare to.      [ default:" $NEW_VER "]"
+  echo -e "\t--old-tag         An earlier tag/commit hash to compare to.   [ default:" $OLD_TAG "]"
+  echo -e "\t--new-tag         A newer tag/commit hash to compare to.      [ default:" $NEW_TAG "]"
   echo -e "\t--max-commits     The maximum number of commits to print.     [ default:" $MAX_COMMITS "]"
   echo -e "\t--notes-dir       A directory containing manual notees.       [ default:" $NOTES_DIR "]"
   echo -e "\t--commits         Print commit history."
@@ -83,8 +83,8 @@ ListParams()
   echo "Creating Auto $RUN_FLAG with the following parameters."
   echo -e "\tRepository:      $REPO"
   echo -e "\tCommit URL:      $COMMIT_URL"
-  echo -e "\tOld version:     $OLD_VER"
-  echo -e "\tNew version:     $NEW_VER"
+  echo -e "\tOld tag:         $OLD_TAG"
+  echo -e "\tNew tag:         $NEW_TAG"
   echo -e "\tMax Commits:     $MAX_COMMITS"
   echo -e "\tNotes Directory: $NOTES_DIR"
   echo -e "\tOutput File:     $OUT_FILE"
@@ -98,7 +98,7 @@ Commits()
   # Counter for commits to print
   i=0;
 
-  git log --pretty=oneline --abbrev-commit ${OLD_VER}..${NEW_VER} | \
+  git log --pretty=oneline --abbrev-commit ${OLD_TAG}..${NEW_TAG} | \
     while read line;
     do
       # Stop printing if max commits has been reached
@@ -119,12 +119,12 @@ Release()
 
   #------------------------------------
   # Release Header
-  echo "## ${NEW_VER_NAME}"
+  echo "## ${NEW_TAG_NAME}"
   echo
   #------------------------------------
   # Notes Header
 
-  target_notes=${NOTES_DIR}/Notes_${NEW_VER_NAME}.md
+  target_notes=${NOTES_DIR}/Notes_${NEW_TAG_NAME}.md
 
   if [[ -f $target_notes ]]; then
     echo "### Notes"
@@ -142,26 +142,26 @@ Release()
   num_pr=${#arr_pr_commits[@]}
 
   # Retrieve commit hashes
-  arr_new_ver_commits=($(Commits ${OLD_VER} ${NEW_VER} | cut -d '`' -f 4 | tr '\n' ' '))
+  arr_new_tag_commits=($(Commits ${OLD_TAG} ${NEW_TAG} | cut -d '`' -f 4 | tr '\n' ' '))
 
   # Search for matching PRs
-  arr_ver_pr=()
-  for commit in ${arr_new_ver_commits[@]}; do
+  arr_tag_pr=()
+  for commit in ${arr_new_tag_commits[@]}; do
     for ((i=0; i<num_pr; i++)); do
       pr=${arr_pr_commits[$i]}
       if [[ $pr == $commit ]]; then
-        ver_pr=${pr_id[$i]};
-        arr_ver_pr=(${arr_ver_pr[@]} $ver_pr)
+        tag_pr=${pr_id[$i]};
+        arr_tag_pr=(${arr_tag_pr[@]} $tag_pr)
       fi;
     done
   done
 
   # If a pull request was found
-  if [[ $ver_pr ]]; then
+  if [[ $tag_pr ]]; then
       echo "### Pull Requests"
       echo
 
-    for pr in ${arr_ver_pr[@]}; do
+    for pr in ${arr_tag_pr[@]}; do
       pr_title=`curl -s https://api.github.com/repos/${REPO}/pulls/$pr | grep title | cut -d '"' -f 4 `
       echo "* [\`\`\`pull/${pr}\`\`\`](https://github.com/${REPO}/pull/${pr}) ${pr_title}"
     done
@@ -172,7 +172,7 @@ Release()
   # Commits Header
   echo "### Commits"
   echo
-  Commits ${OLD_VER} ${NEW_VER} ${MAX_COMMITS}
+  Commits ${OLD_TAG} ${NEW_TAG} ${MAX_COMMITS}
   echo
 
 }
@@ -182,7 +182,7 @@ Changelog()
 {
   # Move old changelog
   mkdir -p ${NOTES_DIR}
-  new_ver_log=${NOTES_DIR}/"CHANGELOG_${NEW_VER_NAME}.md"
+  new_tag_log=${NOTES_DIR}/"CHANGELOG_${NEW_TAG_NAME}.md"
 
   #------------------------------------
   # Changelog Header
@@ -222,7 +222,7 @@ while (( "$#" )); do
       exit 1
       ;;
 
-    # Old version
+    # Output file
     -o|--output)
       if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
         OUT_FILE=$2
@@ -232,20 +232,20 @@ while (( "$#" )); do
       fi
       ;;
 
-    # Old version
-    --old-ver)
+    # Old tag
+    --old-tag)
       if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
-        OLD_VER=$2
+        OLD_TAG=$2
         shift
       else
         shift
       fi
       ;;
 
-    # New version
-    --new-ver)
+    # New tag
+    --new-tag)
       if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
-        NEW_VER=$2
+        NEW_TAG=$2
         shift
       else
         shift
@@ -306,11 +306,11 @@ done
 eval set -- "$PARAMS"
 
 #------------------------------------------------------------------------------
-# Name of the new version
-if [[ $NEW_VER == "HEAD" ]]; then
-  NEW_VER_NAME="Development"
+# Name of the new tag
+if [[ $NEW_TAG == "HEAD" ]]; then
+  NEW_TAG_NAME="Development"
 else
-  NEW_VER_NAME="$NEW_VER"
+  NEW_TAG_NAME="$NEW_TAG"
 fi
 
 # Rename and backup old output file if it exists
@@ -318,4 +318,4 @@ if [[ $OUT_FILE != "/dev/stdout" && -f $OUT_FILE ]]; then
   mv $OUT_FILE ${OUT_FILE}.bak
 fi
 
-$RUN_FLAG $OLD_VER $NEW_VER $MAX_COMMITS $NOTES_DIR > $OUT_FILE
+$RUN_FLAG $OLD_TAG $NEW_TAG $MAX_COMMITS $NOTES_DIR > $OUT_FILE

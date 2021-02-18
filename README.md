@@ -119,9 +119,9 @@ $ autologs --changelog --max-commits 5
 
 ## To Do
 
-- Remove mentions to "ver/version" change to "tag".
+- [x] Rename 'ver' to 'tag'
 - Make PR not dependent on max commits.
-- [ ] Github Actions: Test
+- [x] Github Actions: Test
 - [x] Github Actions: Lint
 
 ## Credits
