@@ -146,8 +146,12 @@ Release()
   if [[ -f $target_notes ]]; then
     echo "### Notes"
     echo
-    grep -r '[0-9]\. ' $target_notes
-    echo
+    notes=`grep -r '[0-9]\. ' $target_notes`
+
+    if [[ $notes ]]; then
+      echo -e "$notes";
+      echo
+    fi
   fi
 
   #------------------------------------

@@ -2,7 +2,29 @@
 
 ## Development
 
+### Notes
+
 ### Commits
+
+## v0.1.1
+
+### Notes
+
+1. Deploy to Github Pages.
+
+### Pull Requests
+
+* [```pull/3```](https://github.com/ktmeaton/autologs/pull/3) Fix Jekyll Config
+
+### Commits
+
+* [```4d43066```](https://github.com/ktmeaton/autologs/commit/4d43066) Merge pull request #3 from ktmeaton/dev
+* [```ed21463```](https://github.com/ktmeaton/autologs/commit/ed21463) fix jekyll config linting
+* [```bd19b91```](https://github.com/ktmeaton/autologs/commit/bd19b91) Merge branch 'main' of https://github.com/ktmeaton/autologs into main
+* [```fc54f6f```](https://github.com/ktmeaton/autologs/commit/fc54f6f) alternate way of showing output
+* [```a949079```](https://github.com/ktmeaton/autologs/commit/a949079) Set theme jekyll-theme-slate
+* [```8e8919d```](https://github.com/ktmeaton/autologs/commit/8e8919d) add description of optional notes files for release
+* [```8bc9b1b```](https://github.com/ktmeaton/autologs/commit/8bc9b1b) update usage docs
 
 ## v0.1.0
 
@@ -23,6 +45,7 @@
 
 ### Commits
 
+* [```abe0fe2```](https://github.com/ktmeaton/autologs/commit/abe0fe2) rename notes and fix pr title
 * [```c033197```](https://github.com/ktmeaton/autologs/commit/c033197) move new tag naming into release
 * [```ce2fded```](https://github.com/ktmeaton/autologs/commit/ce2fded) fix pr dependency on max commits
 * [```d058793```](https://github.com/ktmeaton/autologs/commit/d058793) fix ver vs tag typo

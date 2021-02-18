@@ -58,31 +58,26 @@ autologs --commits --max-commits 3
 ### Release Notes
 
 ``` bash
-autologs --release --new-tag v0.1.0 --max-commits 3
+autologs --release --old-tag v0.1.0 --new-tag v0.1.1 --max-commits 5
 ```
 
-**v0.1.0**
+**v0.1.1**
 
 **Notes**
 
-1. Create repository.
-1. Add scripts.
-1. Add release workflow.
-1. Remove hard-coded variables.
-1. Simplify script naming.
-1. Create the autologs main executable.
-1. Make autologs a standalone executable.
+1. Deploy to Github Pages.
 
 **Pull Requests**
 
-* [```pull/2```](https://github.com/ktmeaton/autologs/pull/2) Prelim Commit Documentation
-* [```pull/1```](https://github.com/ktmeaton/autologs/pull/1) Installation Docs
+* [```pull/3```](https://github.com/ktmeaton/autologs/pull/3) Fix Jekyll Config
 
 **Commits**
 
-* [```abe0fe2```](https://github.com/ktmeaton/autologs/commit/abe0fe2) rename notes and fix pr title
-* [```c033197```](https://github.com/ktmeaton/autologs/commit/c033197) move new tag naming into release
-* [```ce2fded```](https://github.com/ktmeaton/autologs/commit/ce2fded) fix pr dependency on max commits
+* [```4d43066```](https://github.com/ktmeaton/autologs/commit/4d43066) Merge pull request #3 from ktmeaton/dev
+* [```ed21463```](https://github.com/ktmeaton/autologs/commit/ed21463) fix jekyll config linting
+* [```bd19b91```](https://github.com/ktmeaton/autologs/commit/bd19b91) Merge branch 'main' of https://github.com/ktmeaton/autologs into main
+* [```fc54f6f```](https://github.com/ktmeaton/autologs/commit/fc54f6f) alternate way of showing output
+* [```a949079```](https://github.com/ktmeaton/autologs/commit/a949079) Set theme jekyll-theme-slate
 
 The optional section "### Notes" will appear if a notes file matching the tag name exists.
 The notes file must contain an enumerated list of notes.
@@ -101,7 +96,7 @@ matching file: docs/notes/Notes_v0.1.0.md
 ### Changelog
 
 ```bash
-autologs --changelog
+autologs --changelog -o CHANGELOG.md
 ```
 
 See [CHANGELOG.md](https://github.com/ktmeaton/autologs/blob/v0.1.0/CHANGELOG.md) for full output.
