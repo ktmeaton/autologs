@@ -2,8 +2,31 @@
 
 ## Development
 
+### Notes
+
+1. Create repository.
+1. Add scripts.
+1. Add release workflow.
+1. Remove hard-coded variables.
+1. Simplify script naming.
+1. Create the autologs main executable.
+1. Make autologs a standalone executable.
+
+### Pull Requests
+
+* [```pull/1```](https://github.com/ktmeaton/autologs/pull/1) Installation Docs
+
 ### Commits
 
+* [```f8c3eed```](https://github.com/ktmeaton/autologs/commit/f8c3eed) bugfix in repo PR url
+* [```0915673```](https://github.com/ktmeaton/autologs/commit/0915673) Merge pull request #1 from ktmeaton/dev
+* [```369d26b```](https://github.com/ktmeaton/autologs/commit/369d26b) installation docs
+* [```656890c```](https://github.com/ktmeaton/autologs/commit/656890c) rename notes dev title
+* [```46eaf8f```](https://github.com/ktmeaton/autologs/commit/46eaf8f) remove extension from autologs executable
+* [```039e605```](https://github.com/ktmeaton/autologs/commit/039e605) make autologs executable
+* [```0f17291```](https://github.com/ktmeaton/autologs/commit/0f17291) fix target logs and notes path
+* [```e0333a7```](https://github.com/ktmeaton/autologs/commit/e0333a7) remove modular scripts
+* [```b37fa89```](https://github.com/ktmeaton/autologs/commit/b37fa89) self-contained changelog run
 * [```bc188e9```](https://github.com/ktmeaton/autologs/commit/bc188e9) self-contained release run
 * [```6ebcc31```](https://github.com/ktmeaton/autologs/commit/6ebcc31) self contained commits run
 * [```8a2b88c```](https://github.com/ktmeaton/autologs/commit/8a2b88c) functioning as submodules

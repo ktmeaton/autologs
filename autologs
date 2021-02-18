@@ -107,9 +107,9 @@ Commits()
       fi
       hash=`echo $line | cut -d " " -f 1`
       msg=`echo $line | sed "s/$hash //g"`
-      echo -e "* [\`\`\`$hash\`\`\`](${COMMIT_URL}/$hash) $msg";
+      echo -e "* [\`\`\`$hash\`\`\`](${COMMIT_URL}/$hash) $msg"
 
-      # Increment commit counter
+      # Increment commit counter  
       i=`expr $i + 1`
     done;
 }
@@ -185,13 +185,13 @@ Changelog()
   new_ver_log=${NOTES_DIR}/"CHANGELOG_${NEW_VER_NAME}.md"
 
   if [[ -f CHANGELOG.md ]]; then
-      echo "CHANGELOG.md will be moved to ${new_ver_log}"
+      # echo "CHANGELOG.md will be moved to ${new_ver_log}"
       mv CHANGELOG.md ${new_ver_log}
   fi
 
   #------------------------------------
   # Changelog Header
-  echo -e "# CHANGELOG\n" > CHANGELOG.md  
+  echo -e "# CHANGELOG\n"
 
   #------------------------------------
   # Write updates
@@ -200,9 +200,9 @@ Changelog()
   do
     # Parse the current tag
     cur_tag=${ARR_TAGS[$i]}
-    echo "Comparing $prev_tag to $cur_tag"
+    #echo "Comparing $prev_tag to $cur_tag"
     # Create release notes for the current tag
-    Release ${cur_tag} ${prev_tag} $MAX_COMMITS $NOTES_DIR >> CHANGELOG.md
+    Release ${cur_tag} ${prev_tag} $MAX_COMMITS $NOTES_DIR
     prev_tag=$cur_tag
     i+=1
   done  
@@ -224,6 +224,16 @@ while (( "$#" )); do
     -v|--version)
       Version
       exit 1
+      ;;  
+
+    # Old version
+    -o|--output)
+      if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+        OUT_FILE=$2
+        shift
+      else
+        shift
+      fi
       ;;  
 
     # Old version
@@ -307,4 +317,9 @@ else
   NEW_VER_NAME="$NEW_VER"
 fi
 
-$RUN_FLAG $OLD_VER $NEW_VER $MAX_COMMITS $NOTES_DIR
+# Remove old output file if it exists
+if [[ $OUT_FILE != "/dev/stdout" ]]; then
+  rm -f $OUT_FILE;
+fi
+
+$RUN_FLAG $OLD_VER $NEW_VER $MAX_COMMITS $NOTES_DIR 1> $OUT_FILE
