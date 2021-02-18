@@ -44,7 +44,9 @@ Print the last 5 commits.
 
 ```bash
 $ autologs --commits --max-commits 5
+```
 
+```markdown
 * [```1f05f16```](https://github.com/ktmeaton/autologs/commit/1f05f16) proper writing to output file
 * [```f8c3eed```](https://github.com/ktmeaton/autologs/commit/f8c3eed) bugfix in repo PR url
 * [```0915673```](https://github.com/ktmeaton/autologs/commit/0915673) Merge pull request #1 from ktmeaton/dev
@@ -52,15 +54,16 @@ $ autologs --commits --max-commits 5
 * [```656890c```](https://github.com/ktmeaton/autologs/commit/656890c) rename notes dev title
 ```
 
-Print commits between two tags.
+### Release Notes
 
-```
-autologs --commits --old-ver v0.1.0 --new-ver v0.1.1
+``` bash
+autologs --release --max-commits 5
 ```
 
 ## To Do
 
 - Remove mentions to "ver/version" change to "tag".
+- Make PR not dependent on max commits.
 
 ## Credits
 
