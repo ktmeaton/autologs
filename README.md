@@ -1,6 +1,6 @@
 # autologs
 
-[![GitHub release](https://img.shields.io/github/release/ktmeaton/autologs/all.svg)](https://GitHub.com/ktmeaton/autologs/releases/)
+[![GitHub release](https://img.shields.io/github/release/ktmeaton/autologs/all.svg)](https://github.com/ktmeaton/autologs/releases/)
 [![Test](https://github.com/ktmeaton/autologs/actions/workflows/test.yaml/badge.svg)](https://github.com/ktmeaton/autologs/actions/workflows/test.yaml)
 [![Lint](https://github.com/ktmeaton/autologs/actions/workflows/lint.yaml/badge.svg)](https://github.com/ktmeaton/autologs/actions/workflows/lint.yaml)
 
@@ -82,6 +82,20 @@ $ autologs --release --new-tag v0.1.0 --max-commits 3
 * [```abe0fe2```](https://github.com/ktmeaton/autologs/commit/abe0fe2) rename notes and fix pr title
 * [```c033197```](https://github.com/ktmeaton/autologs/commit/c033197) move new tag naming into release
 * [```ce2fded```](https://github.com/ktmeaton/autologs/commit/ce2fded) fix pr dependency on max commits
+```
+
+- The optional section "### Notes" will appear if a notes file matching the tag name exists.
+- The notes file must contain an enumerated list of notes.
+
+```yaml
+autologs parameters:
+  --new-tag v0.1.0
+  --notes-dir docs/notes/
+
+matching file: docs/notes/Notes_v0.1.0.md
+  1. Create repository
+  1. Add scripts.
+  1. Add release workflow.
 ```
 
 ### Changelog
