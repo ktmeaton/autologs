@@ -1,0 +1,66 @@
+#------------------------------------------------------------------------------
+name: Test
+#------------------------------------------------------------------------------
+# Workflow conditions
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+  release:
+    types: [published]
+#------------------------------------------------------------------------------
+jobs:
+  #----------------------------------------------------------------------------
+  commits-history:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create commits history
+        uses: ./autologs --commits -o commits-history.md
+
+      - name: Upload commits history
+        uses: actions/upload-artifact@v2
+        with:
+          name: commits-history
+          path: commits-history.md
+          retention-days: 7
+
+  release-notes:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create release notes
+        uses: ./autologs --release -o release-notes.md
+
+      - name: Upload release notes
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-notes
+          path: release-notes.md
+          retention-days: 7
+
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create changelog
+        uses: ./autologs --changelog -o CHANGELOG.md
+
+      - name: Upload changelog
+        uses: actions/upload-artifact@v2
+        with:
+          name: CHANGELOG
+          path: CHANGELOG.md
+          retention-days: 7
