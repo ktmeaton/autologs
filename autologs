@@ -28,7 +28,6 @@ NUM_TAGS=${#ARR_TAGS[@]}
 # An obscure way to reverse a list
 ARR_TAGS=(`for ((i=${NUM_TAGS}-1; i>=0; i--));  do echo ${ARR_TAGS[$i]}; done | tr '\n' ' '  `)
 
-
 #------------------------------------------------------------------------------
 # Retrieve the absolute path of the executing script
 AbsPath()
@@ -310,6 +309,14 @@ if [[ $NEW_TAG == "HEAD" ]]; then
   NEW_TAG_NAME="Development"
 else
   NEW_TAG_NAME="$NEW_TAG"
+fi
+
+# If there are 0 tags, use first and HEAD
+if [[ `git tag | wc -l` == '0' ]]; then
+  OLD_VER=$FIRST_COMMIT
+  NEW_VER="HEAD"
+elif [[ `git tag | wc -l` == '1' ]]; then
+  OLD_VER=$FIRST_COMMIT
 fi
 
 # Rename and backup old output file if it exists
