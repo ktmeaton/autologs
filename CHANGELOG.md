@@ -2,8 +2,19 @@
 
 ## Development
 
+### Notes
+
+1. Create repository.
+1. Add scripts.
+1. Add release workflow.
+1. Remove hard-coded variables.
+1. Simplify script naming.
+1. Create the autologs main executable.
+
 ### Commits
 
+* [```e0333a7```](https://github.com/ktmeaton/autologs/commit/e0333a7) remove modular scripts
+* [```b37fa89```](https://github.com/ktmeaton/autologs/commit/b37fa89) self-contained changelog run
 * [```bc188e9```](https://github.com/ktmeaton/autologs/commit/bc188e9) self-contained release run
 * [```6ebcc31```](https://github.com/ktmeaton/autologs/commit/6ebcc31) self contained commits run
 * [```8a2b88c```](https://github.com/ktmeaton/autologs/commit/8a2b88c) functioning as submodules

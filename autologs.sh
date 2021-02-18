@@ -28,9 +28,8 @@ NUM_TAGS=${#ARR_TAGS[@]}
 # An obscure way to reverse a list
 ARR_TAGS=(`for ((i=${NUM_TAGS}-1; i>=0; i--));  do echo ${ARR_TAGS[$i]}; done | tr '\n' ' '  `)
 
-#------------------------------------------------------------------------------
-# Functions
 
+#------------------------------------------------------------------------------
 # Retrieve the absolute path of the executing script
 AbsPath()
 {
@@ -46,6 +45,7 @@ AbsPath()
 
 AUTOLOGS_DIR=`AbsPath`;
 
+#------------------------------------------------------------------------------
 Help()
 {
   # Display Help
@@ -69,12 +69,14 @@ Help()
   echo
 }
 
+#------------------------------------------------------------------------------
 Version()
 {
   # Display Version
   echo "$VERSION"
 }
 
+#------------------------------------------------------------------------------
 ListParams()
 {
   echo
@@ -90,6 +92,7 @@ ListParams()
   echo
 }
 
+#------------------------------------------------------------------------------
 Commits()
 {
   # Counter for commits to print
@@ -121,7 +124,8 @@ Release()
   #------------------------------------
   # Notes Header
 
-  target_notes=${NOTES_DIR}/Release_${rel}.md
+  target_notes=${NOTES_DIR}/Notes_${NEW_VER_NAME}.md
+
   if [[ -f $target_notes ]]; then
     echo "### Notes"
     echo
@@ -173,6 +177,7 @@ Release()
 
 }
 
+#------------------------------------------------------------------------------
 Changelog()
 {
   # Move old changelog
@@ -203,7 +208,7 @@ Changelog()
   done  
 }
 
-
+#------------------------------------------------------------------------------
 # Credits: https://medium.com/@Drew_Stokes/bash-argument-parsing-54f3b81a6a8f
 PARAMS=""
 while (( "$#" )); do
@@ -291,10 +296,10 @@ while (( "$#" )); do
       ;;
   esac
 done
-
 # set positional arguments in their proper place
 eval set -- "$PARAMS"
 
+#------------------------------------------------------------------------------
 # Name of the new version
 if [[ $NEW_VER == "HEAD" ]]; then
   NEW_VER_NAME="Development"
