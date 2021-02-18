@@ -1,4 +1,4 @@
-# Release v0.1.0
+# Notes Development
 
 1. Create repository.
 1. Add scripts.
