@@ -23,7 +23,11 @@ jobs:
       # Check 2 most recent tags, overwrites
       - name: Tagged Release Notes
         run: |
-          ./autologs --release -o release-notes.md --old-tag `git tag | tail -n2 | head -n1` --new-tag ${{ github.ref }}
+          ./autologs \
+            --release \
+            -o release-notes.md \
+            --old-tag `git tag | tail -n2 | head -n1` \
+            --new-tag `git tag | tail -n1`
 
       - name: Upload Release Notes
         uses: actions/upload-artifact@v2

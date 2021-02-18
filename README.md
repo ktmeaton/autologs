@@ -1,5 +1,6 @@
 # autologs
 
+[![GitHub release](https://img.shields.io/github/release/ktmeaton/autologs)](https://github.com/ktmeaton/autologs/releases/)
 [![Test](https://github.com/ktmeaton/autologs/actions/workflows/test.yaml/badge.svg)](https://github.com/ktmeaton/autologs/actions/workflows/test.yaml)
 [![Lint](https://github.com/ktmeaton/autologs/actions/workflows/lint.yaml/badge.svg)](https://github.com/ktmeaton/autologs/actions/workflows/lint.yaml)
 

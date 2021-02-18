@@ -93,6 +93,12 @@ ListParams()
 #------------------------------------------------------------------------------
 Commits()
 {
+  # Positional Params
+  OLD_TAG=$1
+  NEW_TAG=$2
+  MAX_COMMITS=$3
+  NOTES_DIR=$4
+
   # Counter for commits to print
   i=0;
 
@@ -114,6 +120,11 @@ Commits()
 
 Release()
 {
+  # Positional Params
+  OLD_TAG=$1
+  NEW_TAG=$2
+  MAX_COMMITS=$3
+  NOTES_DIR=$4
 
   #------------------------------------
   # Release Header
@@ -140,7 +151,7 @@ Release()
   num_pr=${#arr_pr_commits[@]}
 
   # Retrieve commit hashes (all)
-  arr_new_tag_commits=($(Commits ${OLD_TAG} ${NEW_TAG} 'all' | cut -d '`' -f 4 | tr '\n' ' '))
+  arr_new_tag_commits=($(Commits $OLD_TAG $NEW_TAG "all" $NOTES_DIR | cut -d '`' -f 4 | tr '\n' ' '))
 
   # Search for matching PRs
   arr_tag_pr=()
@@ -178,9 +189,11 @@ Release()
 #------------------------------------------------------------------------------
 Changelog()
 {
-  # Move old changelog
-  mkdir -p ${NOTES_DIR}
-  new_tag_log=${NOTES_DIR}/"CHANGELOG_${NEW_TAG_NAME}.md"
+  # Positional Params
+  OLD_TAG=$1
+  NEW_TAG=$2
+  MAX_COMMITS=$3
+  NOTES_DIR=$4
 
   #------------------------------------
   # Changelog Header
