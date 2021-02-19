@@ -2,3 +2,4 @@ line-length: false
 no-duplicate-heading: false
 no-emphasis-as-heading: false
 no-bare-urls: false
+no-inline-html: false
