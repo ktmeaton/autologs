@@ -162,6 +162,7 @@ Release()
   arr_new_tag_commits=($(Commits $OLD_TAG $NEW_TAG "all" $NOTES_DIR | cut -d '`' -f 4 | tr '\n' ' '))
 
   # Search for matching PRs
+  tag_pr=""
   arr_tag_pr=()
   for commit in ${arr_new_tag_commits[@]}; do
     for ((i_pr=0; i_pr<num_pr; i_pr++)); do
@@ -179,7 +180,8 @@ Release()
       echo
 
     for pr in ${arr_tag_pr[@]}; do
-      pr_title=`curl -s https://api.github.com/repos/${REPO}/pulls/$pr | grep title | cut -d '"' -f 4 `
+      pr_title=`curl -s https://api.github.com/repos/${REPO}/pulls/$pr | grep -m 1 title | cut -d '"' -f 4 `
+      echo "* [\`\`\`pull/${pr}\`\`\`](https://github.com/${REPO}/pull/${pr}) ${pr_title}"
     done
     echo
   fi
