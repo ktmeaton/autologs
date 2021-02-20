@@ -180,7 +180,6 @@ Release()
 
     for pr in ${arr_tag_pr[@]}; do
       pr_title=`curl -s https://api.github.com/repos/${REPO}/pulls/$pr | grep title | cut -d '"' -f 4 `
-      echo "* [\`\`\`pull/${pr}\`\`\`](https://github.com/${REPO}/pull/${pr}) ${pr_title}"
     done
     echo
   fi
