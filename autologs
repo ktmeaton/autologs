@@ -16,9 +16,11 @@ OUT_FILE="/dev/stdout"
 
 
 COMMIT_STRIP="origin\t\| (push)\|\.git"
-COMMIT_URL=`git remote -v | grep -E "origin.*push" | sed "s/$COMMIT_STRIP//g"`/"commit"
+REPO_URL=`git remote -v | grep -E "origin.*push" | sed "s/$COMMIT_STRIP//g"`
+COMMIT_URL=$REPO_URL"/commit"
 REPO_STRIP="origin\t\| (push)\|\.git\|https:\/\/github.com\/"
 REPO=`git remote -v | grep -E "origin.*push" | sed "s/$REPO_STRIP//g"`
+REPO_BRANCH=`git branch | head -n 1 | cut -d " " -f 2- `
 
 # Parse Tags
 TAGS=`git tag | tr '\n' ' '`
@@ -107,6 +109,8 @@ Commits()
     do
       # Stop printing if max commits has been reached
       if [[ $i_commit -ge $MAX_COMMITS && $MAX_COMMITS != "all" ]]; then
+        TAG_LINK=`echo "v0.7.0" | sed 's/\.//g' | sed 's/ /-/g'`
+        echo "* See [CHANGELOG.md](${REPO_URL}/blob/${REPO_BRANCH}/CHANGELOG.md#${TAG_LINK}) for additional commits."
         break
       fi
       hash=`echo $line | cut -d " " -f 1`
