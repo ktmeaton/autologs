@@ -109,7 +109,7 @@ Commits()
     do
       # Stop printing if max commits has been reached
       if [[ $i_commit -ge $MAX_COMMITS && $MAX_COMMITS != "all" ]]; then
-        TAG_LINK=`echo "v0.7.0" | sed 's/\.//g' | sed 's/ /-/g'`
+        TAG_LINK=`git branch | head -n 1 | cut -d " " -f 2- | sed 's/\.//g' | sed 's/ /-/g'`
         echo "* See [CHANGELOG.md](${REPO_URL}/blob/${REPO_BRANCH}/CHANGELOG.md#${TAG_LINK}) for additional commits."
         break
       fi
