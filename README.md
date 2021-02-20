@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/ktmeaton/pixilart/master/logos/autologs/autologs.png" height="320"/>
+# [![Autologs Logo](https://raw.githubusercontent.com/ktmeaton/pixilart/master/logos/autologs/autologs.png)](https://github.com/ktmeaton/autologs)
 
 [![GitHub release](https://img.shields.io/github/release/ktmeaton/autologs/all.svg)](https://github.com/ktmeaton/autologs/releases/)
 [![Test](https://github.com/ktmeaton/autologs/actions/workflows/test.yaml/badge.svg)](https://github.com/ktmeaton/autologs/actions/workflows/test.yaml)
