@@ -10,7 +10,7 @@ Automatically create release notes and a changelog.
 
 ```bash
 # Download executable
-curl https://raw.githubusercontent.com/ktmeaton/autologs/v0.1.0/autologs -o autologs
+curl https://raw.githubusercontent.com/ktmeaton/autologs/main/autologs -o autologs
 
 # Add to path
 sudo mv autologs /usr/local/bin/
