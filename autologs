@@ -104,7 +104,7 @@ Commits()
   # Counter for commits to print
   i_commit=0;
 
-  git log --pretty=oneline --abbrev-commit ${OLD_TAG}..${NEW_TAG} | \
+  git log --pretty=oneline --abbrev=8 --abbrev-commit ${OLD_TAG}..${NEW_TAG} | \
     while read line;
     do
       # Stop printing if max commits has been reached
@@ -189,8 +189,8 @@ Release()
 
     for pr in ${arr_tag_pr[@]};
 	  do
-      pr_title=`curl -s https://api.github.com/repos/${REPO}pulls/$pr | grep -m 1 title | cut -d '"' -f 4 `
-      echo "* [\`\`\`pull/${pr}\`\`\`](https://github.com/${REPO}pull/${pr}) ${pr_title}"
+      pr_title=`curl -s https://api.github.com/repos/${REPO}/pulls/$pr | grep -m 1 title | cut -d '"' -f 4 `
+      echo "* [\`\`\`pull/${pr}\`\`\`](https://github.com/${REPO}/pull/${pr}) ${pr_title}"
     done
     echo
   fi
