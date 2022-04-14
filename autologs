@@ -30,6 +30,32 @@ NUM_TAGS=${#ARR_TAGS[@]}
 # An obscure way to reverse a list
 ARR_TAGS=(`for ((i=${NUM_TAGS}-1; i>=0; i--));  do echo ${ARR_TAGS[$i]}; done | tr '\n' ' '  `)
 
+# Get the dates of each tag
+declare -A ARR_TAGS_SECONDS
+
+for tag in ${ARR_TAGS[@]}; do
+  tag_date=$(git log -1 -s --format=%ci $tag)
+  tag_date_seconds=$(date -d "$tag_date" +%s)
+  ARR_TAGS_SECONDS["$tag"]="$tag_date_seconds"
+done;
+
+#  Get the pull requests
+PR_COMMITS=( `git ls-remote origin 'pull/*/head' | awk '{print substr($1,1,8)}' | tr '\n' ' ' ` )
+PR_ID=( `git ls-remote origin 'pull/*/head' | cut -f 2 | cut -d "/" -f 3 | tr '\n' ' ' ` )
+NUM_PR=${#pr_commits[@]}
+declare -A ARR_PR;
+declare -A ARR_PR_SECONDS;
+
+for i in ${!PR_ID[@]}; do
+  id=${PR_ID[$i]}
+  commit=${PR_COMMITS[$i]}
+  commit_date=$(git log -1 -s --format=%ci $commit)
+  commit_date_seconds=$(date -d "$commit_date" +%s)
+
+  ARR_PR[$id]=$commit
+  ARR_PR_SECONDS[$id]=$commit_date_seconds
+done
+
 #------------------------------------------------------------------------------
 # Retrieve the absolute path of the executing script
 AbsPath()
@@ -161,26 +187,47 @@ Release()
   #------------------------------------
   # Pull Requests Header
 
-  # Retieve PR hashes
-  arr_pr_commits=( `git ls-remote origin 'pull/*/head' | awk '{print substr($1,1,8)}' | tr '\n' ' ' ` )
+  # Construct an pr array of {id: commit}
+  pr_commits=( `git ls-remote origin 'pull/*/head' | awk '{print substr($1,1,8)}' | tr '\n' ' ' ` )
   pr_id=( `git ls-remote origin 'pull/*/head' | cut -f 2 | cut -d "/" -f 3 | tr '\n' ' ' ` )
-  num_pr=${#arr_pr_commits[@]}
+  num_pr=${#pr_commits[@]}
+
+  declare -A arr_pr;
+
+  for id in ${pr_id[@]}; do
+    arr_pr[$id]=${pr_commits[$id]}
+  done
+
+  # get the tag dates
+  OLD_TAG_SECONDS=${ARR_TAGS_SECONDS[$OLD_TAG]}
+  NEW_TAG_SECONDS=${ARR_TAGS_SECONDS[$NEW_TAG]}
 
   # Retrieve commit hashes (all)
   arr_new_tag_commits=($(Commits $OLD_TAG $NEW_TAG "all" $NOTES_DIR | cut -d '`' -f 4 | tr '\n' ' '))
 
   # Search for matching PRs
   tag_pr=""
-  arr_tag_pr=()
+  arr_tag_pr=()  
+
+  # by commit match
   for commit in ${arr_new_tag_commits[@]}; do
     for ((i_pr=0; i_pr<num_pr; i_pr++)); do
-      pr=${arr_pr_commits[$i_pr]}
+      pr=${pr_commits[$i_pr]}
       if [[ $pr == $commit ]]; then
         tag_pr=${pr_id[$i_pr]};
         arr_tag_pr=(${arr_tag_pr[@]} $tag_pr)
       fi;
     done
   done
+
+  # by date
+  for id in ${!ARR_PR[@]}; do
+    pr_seconds=${ARR_PR_SECONDS[$id]}
+    if [[ ($pr_seconds -le $NEW_TAG_SECONDS) && ($pr_seconds -gt $OLD_TAG_SECONDS) ]]; then
+      tag_pr=$id
+      arr_tag_pr=(${arr_tag_pr[@]} $tag_pr)
+    fi
+  done  
 
   # If a pull request was found
   if [[ $tag_pr ]]; then
