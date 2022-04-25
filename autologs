@@ -222,6 +222,12 @@ Release()
 
   # by date
   for id in ${!ARR_PR[@]}; do
+
+    # Check we didn't already find this by date
+    if [[ " ${arr_tag_pr[@]} " =~ " ${id} " ]]; then
+      continue
+    fi 
+
     pr_seconds=${ARR_PR_SECONDS[$id]}
     if [[ ($pr_seconds -le $NEW_TAG_SECONDS) && ($pr_seconds -gt $OLD_TAG_SECONDS) ]]; then
       tag_pr=$id
