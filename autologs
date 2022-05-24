@@ -136,12 +136,12 @@ Commits()
       # Stop printing if max commits has been reached
       if [[ $i_commit -ge $MAX_COMMITS && $MAX_COMMITS != "all" ]]; then
         TAG_LINK=`echo ${NEW_TAG} | sed 's/\.//g' | sed 's/ /-/g'`
-        echo "* See [CHANGELOG.md](${REPO_URL}/blob/${REPO_BRANCH}/CHANGELOG.md#${TAG_LINK}) for additional commits."
+        echo "- See [CHANGELOG.md](${REPO_URL}/blob/${REPO_BRANCH}/CHANGELOG.md#${TAG_LINK}) for additional commits."
         break
       fi
       hash=`echo $line | cut -d " " -f 1`
       msg=`echo $line | sed "s/$hash //g"`
-      echo -e "* [\`\`\`$hash\`\`\`](${COMMIT_URL}/$hash) $msg"
+      echo -e "- [\`\`\`$hash\`\`\`](${COMMIT_URL}/$hash) $msg"
 
       # Increment commit counter
       i_commit=`expr $i_commit + 1`
@@ -247,7 +247,7 @@ Release()
     for pr in ${arr_tag_pr[@]};
 	  do
       pr_title=`curl -s https://api.github.com/repos/${REPO}/pulls/$pr | grep -m 1 title | cut -d '"' -f 4 `
-      echo "* [\`\`\`pull/${pr}\`\`\`](https://github.com/${REPO}/pull/${pr}) ${pr_title}"
+      echo "- [\`\`\`pull/${pr}\`\`\`](https://github.com/${REPO}/pull/${pr}) ${pr_title}"
     done
     echo
   fi
