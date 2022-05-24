@@ -180,7 +180,8 @@ Release()
 
     # Skip the first level header
     # Add 3 ### to shift headers down below H3
-    notes=$(grep -v -E "^# " $target_notes | sed 's/^#/###/g')
+    # This requires spacing after header, which is good markdown practice
+    notes=$(grep -v -E "^# " $target_notes | tail -n+2 | sed 's/^#/###/g')
 
     if [[ $notes ]]; then
       echo -e "$notes";
